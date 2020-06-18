@@ -18,10 +18,13 @@ int main()
     Student_t student2 = {2, "李四", 70.2, 80, 95};
     Student_t student3 = {3, "王五", 100, 80, 95};
     Array *array = Array_Init(sizeof(Student_t));
-    // printf("%d\n",array->size);
     array->push(array, &student);
-    array->unshift(array, &student2);
+    // array->unshift(array, &student2);
     array->push(array, &student3);
+    array->push(array, &student2);
+    array->push(array, &student2);
+    array->push(array, &student3);
+    printf("%d\n", array->capacity,array->length);
     // Array_UpdateByIndex(array, &student3, 0);
     // Array_DeleteByIndex(array,0);
     // void *data = Array_QueryByIndex(array, 2);

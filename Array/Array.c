@@ -2,24 +2,30 @@
 
 Array *Array_Init(size_t size)
 {
-    void *array = (void *)malloc(size * ARRAR_CAPACITY);
-    int length = 0;
-
-    Array this = {size, ARRAR_CAPACITY, length,
-                  array, Array_Push, Array_Unshift,
-                  Array_UpdateByIndex, Array_QueryByIndex,
-                  Array_DeleteByIndex, Array_Travel, Array_DestroyArray};
-
-    return &this;
+    Array *array = (Array *)malloc(sizeof(Array));
+    void *arr = malloc(size * ARRAR_CAPACITY);
+    array->size = size;
+    array->capacity = ARRAR_CAPACITY;
+    array->length = 0;
+    array->array = arr;
+    array->push = Array_Push;
+    array->unshift = Array_Unshift;
+    array->updateByIndex = Array_UpdateByIndex;
+    array->queryByIndex = Array_QueryByIndex;
+    array->deleteByIndex = Array_DeleteByIndex;
+    array->travel = Array_Travel;
+    array->destroyArray = Array_DestroyArray;
+    return array;
 }
 
-int Array_remalloc(Array *this)
+int Array_realloc(Array *this)
 {
+
     if (this->length == this->capacity)
     {
         this->capacity = this->capacity * 2;
         //重新分配内存当前数组长度加1*数据大小
-        this->array = remalloc(this->array, this->capacity * this->size);
+        this->array = realloc(this->array, this->capacity * this->size);
 
         return this->array == NULL ? -1 : 0;
     }
@@ -43,9 +49,8 @@ void *Array_malloc(Array *this)
 
 int Array_Push(Array *this, void *data)
 {
-
     //重新分配内存当前数组长度加1*数据大小
-    if (Array_remalloc(this) == -1)
+    if (Array_realloc(this) == -1)
     {
         return -1;
     }
@@ -59,17 +64,18 @@ int Array_Push(Array *this, void *data)
 int Array_Unshift(Array *this, void *data)
 {
     //重新分配内存当前数组长度加1*数据大小
-    Array *array = (void *)Array_malloc(this);
+    Array *array = (Array *)Array_malloc(this);
     if (array == NULL)
     {
         return -1;
     }
 
     memcpy(array, data, this->size);
-    memcpy(this->array + this->size, array, this->length * this->size);
+    memcpy(array + this->size, this->array, this->length * this->size);
+    free(this->array);
     this->length += 1;
-    free(array);
-    array = NULL;
+    this->array = array;
+
     return 0;
 }
 //根据下标修改对应数据到数组，成功返回0,失败返回负数
@@ -103,10 +109,10 @@ int Array_DeleteByIndex(Array *this, int index)
     }
     memcpy(array, this->array, index * this->size);
     memcpy(array + index * this->size, this->array + (index + 1) * this->size, (this->length - index) * this->size);
+    free(this->array);
     this->array = array;
     this->length -= 1;
-    free(array);
-    array = NULL;
+
     return 0;
 }
 
