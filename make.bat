@@ -1,1 +1,1 @@
-gcc ./Array/Array.c main.c
+gcc ./Array/Array.c ./Map/Map.c main.c
