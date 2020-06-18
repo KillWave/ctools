@@ -1,95 +1,105 @@
 #include "Array.h"
+
 Array *Array_Init(int size)
 {
-    Array *tmp = (Array *)malloc(sizeof(Array));
-    if (tmp == NULL)
+    Array *this = (Array *)malloc(sizeof(Array));
+    if (this == NULL)
         return NULL;
-    tmp->size = size;
-    tmp->length = 0;
-    tmp->array = NULL;
-    return tmp;
+    this->size = size;
+    this->length = 0;
+    this->array = NULL;
+    this->push = Array_Push;
+    this->unshift = Array_Unshift;
+    this->updateByIndex = Array_UpdateByIndex;
+    this->queryByIndex = Array_QueryByIndex;
+    this->deleteByIndex = Array_DeleteByIndex;
+    this->travel = Array_Travel;
+    this->destroyArray = Array_DestroyArray;
+
+    return this;
 }
 
-int Array_Push(Array *array_ptr, void *data)
+int Array_Push(Array *this, void *data)
 {
 
     //重新分配内存当前数组长度加1*数据大小
-    void *arr = malloc(((array_ptr->length) + 1) * array_ptr->size);
+    void *arr = malloc(((this->length) + 1) * this->size);
     if (arr == NULL)
         return -1;
     //内存之前的内存数据copy到新分配内存中
-    memcpy(arr, array_ptr->array, array_ptr->length * array_ptr->size);
-    memcpy(arr + array_ptr->length * array_ptr->size, data, array_ptr->size);
-    free(array_ptr->array);
+    memcpy(arr, this->array, this->length * this->size);
+    memcpy(arr + this->length * this->size, data, this->size);
+    free(this->array);
     //长度加1
-    array_ptr->length += 1;
+    this->length += 1;
     //内存地址赋值
-    array_ptr->array = arr;
+    this->array = arr;
     return 0;
 }
 //将数据追加到数组的头部，成功返回0，失败返回-1
-int Array_Unshift(Array *array_ptr, void *data)
+int Array_Unshift(Array *this, void *data)
 {
-    void *arr = malloc((array_ptr->length + 1) * array_ptr->size);
+    void *arr = malloc((this->length + 1) * this->size);
     if (arr == NULL)
         return -1;
-    memcpy(arr, data, array_ptr->size);
-    memcpy(arr + array_ptr->size, array_ptr->array, array_ptr->length * array_ptr->size);
-    free(array_ptr->array);
-    array_ptr->length += 1;
-    array_ptr->array = arr;
+    memcpy(arr, data, this->size);
+    memcpy(arr + this->size, this->array, this->length * this->size);
+    free(this->array);
+    this->length += 1;
+    this->array = arr;
     return 0;
 }
 //根据下标修改对应数据到数组，成功返回0,失败返回负数
-int Array_UpdateByIndex(Array *array_ptr, void *data, int index)
+int Array_UpdateByIndex(Array *this, void *data, int index)
 {
-    if (index >= array_ptr->length)
+    if (index >= this->length)
     {
         printf("\033[31m Invade append\033[0m\n");
         return -1;
     }
 
-    memcpy(array_ptr->array + (array_ptr->size * index), data, array_ptr->size);
+    memcpy(this->array + (this->size * index), data, this->size);
 
     return 0;
 }
 //根据下标获得对应数据
-void *Array_QueryByIndex(Array *array_ptr, int index)
+void *Array_QueryByIndex(Array *this, int index)
 {
-    if (index >= array_ptr->length)
+    if (index >= this->length)
     {
         return NULL;
     }
-    return array_ptr->array + (index * array_ptr->size);
+    return this->array + (index * this->size);
 }
 //根据下标删除数据
-int Array_DeleteByIndex(Array *array_ptr, int index)
+int Array_DeleteByIndex(Array *this, int index)
 {
-    void *arr = malloc((array_ptr->length - 1) * array_ptr->size);
+    void *arr = malloc((this->length - 1) * this->size);
     if (arr == NULL)
     {
         return -1;
     }
-    memcpy(arr, array_ptr->array, index * array_ptr->size);
-    memcpy(arr + index * array_ptr->size, array_ptr->array + (index + 1) * array_ptr->size, (array_ptr->length - index) * array_ptr->size);
-    free(array_ptr->array);
-    array_ptr->array = arr;
-    array_ptr->length -= 1;
+    memcpy(arr, this->array, index * this->size);
+    memcpy(arr + index * this->size, this->array + (index + 1) * this->size, (this->length - index) * this->size);
+    free(this->array);
+    this->array = arr;
+    this->length -= 1;
     return 0;
 }
 
 //遍历动态数组数据
-void Array_Travel(Array *array_ptr, void (*callback)(void *item, void *args), void *param)
+void Array_Travel(Array *this, void (*callback)(void *item, void *args), void *param)
 {
     int i;
-    for (i = 0; i < array_ptr->length; i++)
+    for (i = 0; i < this->length; i++)
     {
-        callback(array_ptr->array + (i * array_ptr->size), param);
+        callback(this->array + (i * this->size), param);
     }
 }
 //销毁动态数组
-void Array_DestroyArray(Array *array_ptr)
+void Array_DestroyArray(Array *this)
 {
-    free(array_ptr->array);
-    free(array_ptr);
+    free(this->array);
+    free(this);
+    this = NULL;
 }
