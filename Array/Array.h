@@ -4,9 +4,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#define ARRAR_CAPACITY 10
 typedef struct array
 {
-    unsigned long size;
+    size_t size;
+    int capacity;
     int length;
     void *array;
     int (*push)(struct array *this, void *data);
@@ -18,7 +20,7 @@ typedef struct array
     void (*destroyArray)(struct array *this);
 } Array;
 //初始化动态数组结构体，成功返回一个初始化完成的结构体，失败返回NULL
-Array *Array_Init(int size);
+Array *Array_Init(size_t size);
 //将数据追加到数组的尾部，成功返回0，失败返回-1
 int Array_Push(Array *array_ptr, void *data);
 //将数据追加到数组的头部，成功返回0，失败返回-1
@@ -33,4 +35,8 @@ int Array_DeleteByIndex(Array *array_ptr, int index);
 void Array_Travel(Array *array_ptr, void (*callback)(void *item, void *args), void *param);
 //销毁数组
 void Array_DestroyArray(Array *array_ptr);
+//数组扩容
+int Array_remalloc(Array *this);
+//空间分配
+void *Array_malloc(Array *this);
 #endif
