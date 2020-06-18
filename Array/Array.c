@@ -60,11 +60,11 @@ int Array_Push(Array *this, void *data)
 
     return 0;
 }
-//将数据追加到数组的头部，成功返回0，失败返回-1
+// //将数据追加到数组的头部，成功返回0，失败返回-1
 int Array_Unshift(Array *this, void *data)
 {
     //重新分配内存当前数组长度加1*数据大小
-    Array *array = (Array *)Array_malloc(this);
+    void *array = (void *)Array_malloc(this);
     if (array == NULL)
     {
         return -1;
@@ -102,7 +102,7 @@ void *Array_QueryByIndex(Array *this, int index)
 //根据下标删除数据
 int Array_DeleteByIndex(Array *this, int index)
 {
-    Array *array = (void *)Array_malloc(this);
+    void *array = (void *)Array_malloc(this);
     if (array == NULL)
     {
         return -1;
