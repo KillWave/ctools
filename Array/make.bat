@@ -1,0 +1,1 @@
+gcc ./Array/Array.c main.c

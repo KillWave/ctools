@@ -1,0 +1,30 @@
+
+#ifndef __ARRAY_H__
+#define __ARRAY_H__
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+typedef struct
+{
+    unsigned long size;
+    int length;
+    void *array;
+} Array;
+//初始化动态数组结构体，成功返回一个初始化完成的结构体，失败返回NULL
+Array *Array_Init(int size);
+//将数据追加到数组的尾部，成功返回0，失败返回-1
+int Array_Push(Array *array_ptr, void *data);
+//将数据追加到数组的头部，成功返回0，失败返回-1
+int Array_Unshift(Array *array_ptr, void *data);
+//按下标更新数据到数组，成功返回0
+int Array_UpdateByIndex(Array *array_ptr, void *data, int index);
+//根据下标获得对应数据 成功返回数据指向失败返回NULL
+void *Array_QueryByIndex(Array *array_ptr, int index);
+//根据下标删除数据 成功返回0失败返回-1
+int Array_DeleteByIndex(Array *array_ptr, int index);
+//遍历数组数据
+void Array_Travel(Array *array_ptr, void (*callback)(void *item, void *args), void *param);
+//销毁数组
+void Array_DestroyArray(Array *array_ptr);
+#endif
