@@ -2,21 +2,12 @@
 
 Array *Array_Init(int size)
 {
-    Array *this = (Array *)malloc(sizeof(Array));
-    if (this == NULL)
-        return NULL;
-    this->size = size;
-    this->length = 0;
-    this->array = NULL;
-    this->push = Array_Push;
-    this->unshift = Array_Unshift;
-    this->updateByIndex = Array_UpdateByIndex;
-    this->queryByIndex = Array_QueryByIndex;
-    this->deleteByIndex = Array_DeleteByIndex;
-    this->travel = Array_Travel;
-    this->destroyArray = Array_DestroyArray;
+    Array this = {size, 0,
+                  NULL, Array_Push, Array_Unshift,
+                  Array_UpdateByIndex, Array_QueryByIndex,
+                  Array_DeleteByIndex, Array_Travel, Array_DestroyArray};
 
-    return this;
+    return &this;
 }
 
 int Array_Push(Array *this, void *data)
