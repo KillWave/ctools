@@ -18,13 +18,16 @@ int Array_realloc(Array *this);
 //空间分配
 void *Array_malloc(Array *this);
 
-Array *Array_Init(size_t size)
+Array *Array_Init(void *arr, int capacity, int num, size_t size)
 {
+    int c = capacity == 0 ? ARRAR_CAPACITY : capacity;
     Array *array = (Array *)malloc(sizeof(Array));
-    void *arr = malloc(size * ARRAR_CAPACITY);
+    if (arr == NULL){
+        arr = malloc(size * c);
+    }
     array->size = size;
-    array->capacity = ARRAR_CAPACITY;
-    array->length = 0;
+    array->capacity = c;
+    array->length = num;
     array->array = arr;
     array->push = Array_Push;
     array->unshift = Array_Unshift;
