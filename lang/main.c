@@ -10,7 +10,7 @@ typedef enum
 } category;
 typedef struct
 {
-    category type;
+    int type;
     char *lexerme;
 } token;
 void scanf_token(char c){

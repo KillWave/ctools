@@ -70,7 +70,7 @@ void *Array_malloc(Array *this)
 
 int Array_Push(Array *this, void *data)
 {
-    //重新分配内存当前数组长度加1*数据大小
+    //内存扩容
     if (Array_realloc(this) == -1)
     {
         return -1;
@@ -84,7 +84,7 @@ int Array_Push(Array *this, void *data)
 // //将数据追加到数组的头部，成功返回0，失败返回-1
 int Array_Unshift(Array *this, void *data)
 {
-    //重新分配内存当前数组长度加1*数据大小
+    //重新分配内存
     void *array = (void *)Array_malloc(this);
     if (array == NULL)
     {
