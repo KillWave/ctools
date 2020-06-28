@@ -10,12 +10,13 @@ int yyerror (char const *);
 }
 %token <double_value> DOUBLE_LITERAL
 %token CR
-%type <double_value> calc line
-%left '+' '-' ADD SUB 
-%left '*' '/' MUL DIV
+%type <double_value> expr line
+%left ADD SUB 
+%left MUL DIV
+%left LP RP
 %%
-line :calc CR { printf(">>%lf\n",$1); };
-calc : DOUBLE_LITERAL { $$ = $1;}
+line :expr CR { printf(">>%0.5lf\n",$1); };
+expr : DOUBLE_LITERAL
      | expr ADD expr {
          $$ = $1 + $3;
      }
@@ -27,6 +28,9 @@ calc : DOUBLE_LITERAL { $$ = $1;}
      }
      | expr DIV expr {
          $$ = $1 / $3;
+     }
+     | LP expr RP {
+         $$ = $2;
      };
 
 %%
