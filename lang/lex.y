@@ -9,27 +9,26 @@ int yyerror (char const *);
     double double_value;
 }
 %token <double_value> DOUBLE_LITERAL
-%token CR
-%type <double_value> expr line
+%token CR LP RP
+%type <double_value>  expr exprcalc line 
 %left ADD SUB 
 %left MUL DIV
-%left LP RP
 %%
-line :expr CR { printf(">>%0.5lf\n",$1); };
-expr : DOUBLE_LITERAL
-     | expr ADD expr {
+line :exprcalc CR { printf(">>%0.5lf\n",$1); };
+exprcalc : expr ADD expr {
          $$ = $1 + $3;
-     }
-     | expr SUB expr {
-         $$ = $1 - $3;
-     }
-     | expr MUL expr {
-         $$ = $1 * $3;
-     }
-     | expr DIV expr {
-         $$ = $1 / $3;
-     }
-     | LP expr RP {
+        }
+        | expr SUB expr {
+            $$ = $1 - $3;
+        }
+        | expr MUL expr {
+            $$ = $1 * $3;
+        }
+        | expr DIV expr {
+            $$ = $1 / $3;
+        };
+expr : DOUBLE_LITERAL
+     | LP exprcalc RP {
          $$ = $2;
      };
 
@@ -42,14 +41,13 @@ int yyerror(char const *str)
     return 0;
 }
 
-int main(void)
+int main(int argc,char* argv[])
 {
     extern int yyparse(void);
     extern FILE *yyin;
-
     yyin = stdin;
     if (yyparse()) {
-        fprintf(stderr, "Error ! Error ! Error !\n");
+        fprintf(stderr, "Error!\n");
         exit(1);
     }
 }

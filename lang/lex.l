@@ -1,4 +1,4 @@
-%option noyywrap
+%option noyywrap yylineno
 %{
     #include<stdio.h>
     #include "y.tab.h"
