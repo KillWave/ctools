@@ -38,10 +38,7 @@ void insert_vector(vector *array, int index, void *data)
     if (array->length >= array->capacity)
     {
         int newCapacity = array->capacity * 2;
-        void **newSpace = (void **)malloc(sizeof(void *) * newCapacity);
-        memcpy(newSpace, array->pAddr, sizeof(void *) * array->capacity);
-        free(array->pAddr);
-        array->pAddr = newSpace;
+        array->pAddr = (void **)realloc(array->pAddr,sizeof(void *) * newCapacity);
         array->capacity = newCapacity;
     }
     for (int i = array->length - 1; i >= index; i--)
