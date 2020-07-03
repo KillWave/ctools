@@ -1,1 +1,0 @@
-gcc ./Array/Array.c  arrayTemplate.c -o arrayTemplate.exe
