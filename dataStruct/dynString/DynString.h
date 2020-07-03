@@ -60,10 +60,7 @@ void dynstring_realloc(DynString *pstr, int new_size)
         capacity = capacity * 2;
     }
     data = (char*)realloc(pstr->data, capacity);
-    if (!data)
-    {
-        printf("内存分配失败");
-    }
+    if (!data) return;
     pstr->capacity = capacity;
     pstr->data = data;
 }

@@ -63,7 +63,6 @@ void forEach_vector(vector *array, void (*myForEach)(void *))
         myForEach(array->pAddr[i]);
     }
 }
-
 //删除
 void removeByIndex_vector(vector *array, int index)
 {
