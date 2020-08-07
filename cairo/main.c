@@ -25,9 +25,9 @@ int main()
     cairo_show_text(cr, "hello world"); //绘制英文
     cairo_move_to(cr, 100, 200);
     cairo_show_text(cr, "你好"); //绘制中文
-
+    cairo_surface_has_show_text_glyphs(surface);
     //cairo_fill(cr);                       //填充，使用的颜色当然是上面设置的颜色。
-    cairo_surface_write_to_png(surface, "f.png"); //写入png文件
+    //cairo_surface_write_to_png(surface, "f.png"); //写入png文件
     cairo_destroy(cr);                            //销毁画笔
 
     return 0;

@@ -1,0 +1,1 @@
+gcc ./tools/utilities.c main.c -o sdl_anime.exe -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_ttf
